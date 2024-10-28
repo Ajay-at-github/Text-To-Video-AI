@@ -8,6 +8,7 @@ from moviepy.editor import (AudioFileClip, CompositeVideoClip, CompositeAudioCli
                             TextClip, VideoFileClip)
 from moviepy.audio.fx.audio_loop import audio_loop
 from moviepy.audio.fx.audio_normalize import audio_normalize
+from requests.exceptions import RequestException
 from moviepy.video.tools.subtitles import SubtitlesClip
 import requests
 
