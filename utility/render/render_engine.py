@@ -30,11 +30,11 @@ def get_program_path(program_name):
 def get_output_media(audio_file_path, timed_captions, background_video_data, video_server):
     OUTPUT_FILE_NAME = "rendered_video.mp4"
     magick_path = get_program_path("magick")
-    print(magick_path)
-    if magick_path:
-        os.environ['IMAGEMAGICK_BINARY'] = magick_path
-    else:
-        os.environ['IMAGEMAGICK_BINARY'] = '/usr/bin/convert'
+    print(magick_path)
+    if magick_path:
+        os.environ['IMAGEMAGICK_BINARY'] = magick_path
+    else:  
+        os.environ['IMAGEMAGICK_BINARY'] = '/usr/bin/convert'
 
     visual_clips = []
     for (t1, t2), video_url in background_video_data:
