@@ -11,10 +11,36 @@ from moviepy.audio.fx.audio_normalize import audio_normalize
 from moviepy.video.tools.subtitles import SubtitlesClip
 import requests
 
-def download_file(url, filename):
-    with open(filename, 'wb') as f:
-        response = requests.get(url)
-        f.write(response.content)
+def download_file(url, filename, retries=3):
+    """Downloads a file from a URL with retry mechanism."""
+
+    for _ in range(retries):
+        try:
+            with open(filename, 'wb') as f:
+                response = requests.get(url, stream=True)
+                response.raise_for_status()  # Raise an exception for bad status codes
+
+                total_length = response.headers.get('content-length')
+                if total_length is None:
+                    f.write(response.content)
+                else:
+                    dl = 0
+                    total_length = int(total_length)
+                    for data in response.iter_content(chunk_size=4096):
+                        dl += len(data)
+                        f.write(data)
+                        done = int(50 * dl / total_length)
+                        print(f"\rDownloading: [{'=' * done}{' ' * (50-done)}] {dl}/{total_length}", end="")
+                    print()
+            return  # Download successful, exit the loop
+
+        except RequestException as e:
+            print(f"Error downloading {url}: {e}")
+            # You can add a delay here before retrying
+            time.sleep(1)
+
+    print(f"Failed to download {url} after {retries} retries.")
+    # You might want to raise an exception or handle the failure in another way
 
 def search_program(program_name):
     try: 
