@@ -12,9 +12,17 @@ from requests.exceptions import RequestException
 from moviepy.video.tools.subtitles import SubtitlesClip
 import requests
 
+import requests
+import time
+from requests.exceptions import RequestException
+
 def download_file(url, filename, retries=3):
     """Downloads a file from a URL with retry mechanism."""
 
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    }  # Example User-Agent
+  
     for _ in range(retries):
         try:
             with open(filename, 'wb') as f:
